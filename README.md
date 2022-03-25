@@ -111,3 +111,31 @@ $payment->onTransactionResult(
 
 );
 ```
+## Generate phone recharge HTML form
+You can generate the HTML form
+by calling the **phoneRechargeForm** method.
+It receives five parameters:
+- The transaction Id, you will receive it in the transaction callback, it can be max of 15 characters
+- The amount of the transaction
+- The phone number you want to recharge
+- The operator id (it will be provided by SISP)
+- The callback url, the transaction result will be sent to here
+
+```php
+$buyForm = $payment->phoneRechargeForm("TR001", 1000, 9112233, 2, "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php");
+```
+
+## Generate service payment HTML form
+You can generate the HTML form
+by calling the **servicePaymentForm** method.
+It receives five parameters:
+- The transaction Id, you will receive it in the transaction callback, it can be max of 15 characters
+- The amount of the transaction
+- The reference number of the bill you want to pay
+- The enity id (it will be provided by SISP)
+- The callback url, the transaction result will be sent to here
+
+```php
+$buyForm = $payment->servicePaymentForm("TR001", 1000, "123456789", "6", "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php");
+```
+
