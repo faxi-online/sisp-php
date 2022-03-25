@@ -2,6 +2,13 @@
 
 namespace Faxi;
 
+// to prevent browser cache the start transaction page
+// if user go back and retry the payment it will
+// generate a new form and everything will work fine
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 class Sisp
 {
     public $posId;
