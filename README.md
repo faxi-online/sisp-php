@@ -5,12 +5,21 @@ vinti4 [https://www.vinti4.cv/](https://www.vinti4.cv/) payment in a easy way.
 
 ## Install
 Download the project folder on your project.
+Or install it using composer:
+```
+composer require faxi-online/sisp-php:dev-main
+```
 
 ## Include in your project
 Import the library file;
 
 ```php
 include "../Sisp.php";
+```
+
+Or include the composer autoload
+```php
+include "vendor/autoload.php";
 ```
 
 ## Create Transaction Object
