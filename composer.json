@@ -1,0 +1,11 @@
+{
+    "name": "faxi-online/sisp-php",
+    "description": "Implementation of a library to process SISP vinti4 payment in a easy way.",
+    "authors": [
+        {
+            "name": "Assis Ferreira",
+            "email": "ferreira.assisruny@gmail.com"
+        }
+    ],
+    "require": {}
+}
