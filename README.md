@@ -55,9 +55,9 @@ and submit it by calling **document.forms[0].submit();**
 
 			<?= $buyForm ?>
             
-            <button onclick="startTransaction()">
-                Start Transaction
-            </button>
+                        <button onclick="startTransaction()">
+                            Start Transaction
+                        </button>
 
 		</div>
 
