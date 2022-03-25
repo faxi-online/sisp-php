@@ -49,7 +49,7 @@ class Sisp
         return self::generateHtmlForm($postUrl, $fields);
     }
 
-    function buyTransactionResult($successCallback, $errorCallback = null, $cancelledCallback = null)
+    function onTransactionResult($successCallback, $errorCallback = null, $cancelledCallback = null)
     {
         $successMessageType = array('8', '10', 'P', 'M');
 

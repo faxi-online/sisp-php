@@ -6,7 +6,7 @@ use Faxi\Sisp;
 
 $payment = new Sisp("90000045", "kfyhhKJH875ndu44");
 
-$payment->buyTransactionResult(
+$payment->onTransactionResult(
 
         function ($transaction_id){
 

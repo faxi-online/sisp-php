@@ -72,3 +72,39 @@ and submit it by calling **document.forms[0].submit();**
 	</body>
 </html>
 ```
+
+## Transaction result callback
+To process callback result we should use the method **onTransactionResult**,
+it receive three parameters:
+- The success callback function
+- The error callback function
+- The cancellation callback function
+
+```php
+$payment = new Sisp("90000045", "kfyhhKJH875ndu44");
+
+$payment->onTransactionResult(
+
+    function ($transaction_id){
+
+        echo "<p>Payment sucessfully for $transaction_id</p>";
+
+    },
+
+    function ($transaction_id, $errorDescription, $errorDetail, $errorAdditionalMessage){
+
+        echo "<p>Error on transaction $transaction_id</p>";
+        echo "<p>Error: description $errorDescription</p>";
+        echo "<p>Error: detail $errorDetail</p>";
+        echo "<p>Error: additional $errorAdditionalMessage</p>";
+
+    },
+
+    function (){
+
+        echo "<p>Transaction cancelled</p>";
+
+    }
+
+);
+```
