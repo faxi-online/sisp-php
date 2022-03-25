@@ -7,5 +7,6 @@
             "email": "ferreira.assisruny@gmail.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "minimum-stability": "dev"
 }
