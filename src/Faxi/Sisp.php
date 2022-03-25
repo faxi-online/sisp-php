@@ -56,6 +56,64 @@ class Sisp
         return self::generateHtmlForm($postUrl, $fields);
     }
 
+    function phoneRechargeForm($transaction_id, $amount, $phoneNumber, $operatorId, $callbackUrl)
+    {
+        $fields = [
+            'transactionCode' => 3,
+            'posID' => $this->posId,
+            'merchantRef' => $transaction_id,
+            'merchantSession' => "S" . date('YmdHms'),
+            'amount' => $amount,
+            'currency' => 132,
+            'is3DSec' => 1,
+            'urlMerchantResponse' => $callbackUrl,
+            'languageMessages' => $this->lang,
+            'timeStamp' => date('Y-m-d H:m:s'),
+            'fingerprintversion' => '1',
+            'entityCode' => $operatorId,
+            'referenceNumber' => $phoneNumber
+        ];
+
+        $fields['fingerprint'] = self::GerarFingerPrintEnvio(
+            $this->posAuthCode, $fields['timeStamp'], $amount,
+            $fields['merchantRef'], $fields['merchantSession'], $fields['posID'],
+            $fields['currency'], $fields['transactionCode'], $fields['entityCode'], $fields['referenceNumber']
+        );
+
+        $postUrl = $this->apiBaseUrl . $this->transactionPath . "?FingerPrint=" . urlencode($fields["fingerprint"]) . "&TimeStamp=" . urlencode($fields["timeStamp"]) . "&FingerPrintVersion=" . urlencode($fields["fingerprintversion"]); 
+        
+        return self::generateHtmlForm($postUrl, $fields);
+    }
+
+    function servicePaymentForm($transaction_id, $amount, $reference, $entity, $callbackUrl)
+    {
+        $fields = [
+            'transactionCode' => 2,
+            'posID' => $this->posId,
+            'merchantRef' => $transaction_id,
+            'merchantSession' => "S" . date('YmdHms'),
+            'amount' => $amount,
+            'currency' => 132,
+            'is3DSec' => 1,
+            'urlMerchantResponse' => $callbackUrl,
+            'languageMessages' => $this->lang,
+            'timeStamp' => date('Y-m-d H:m:s'),
+            'fingerprintversion' => '1',
+            'entityCode' => $entity,
+            'referenceNumber' => $reference
+        ];
+
+        $fields['fingerprint'] = self::GerarFingerPrintEnvio(
+            $this->posAuthCode, $fields['timeStamp'], $amount,
+            $fields['merchantRef'], $fields['merchantSession'], $fields['posID'],
+            $fields['currency'], $fields['transactionCode'], $fields['entityCode'], $fields['referenceNumber']
+        );
+
+        $postUrl = $this->apiBaseUrl . $this->transactionPath . "?FingerPrint=" . urlencode($fields["fingerprint"]) . "&TimeStamp=" . urlencode($fields["timeStamp"]) . "&FingerPrintVersion=" . urlencode($fields["fingerprintversion"]); 
+        
+        return self::generateHtmlForm($postUrl, $fields);
+    }
+
     function onTransactionResult($successCallback, $errorCallback = null, $cancelledCallback = null)
     {
         $successMessageType = array('8', '10', 'P', 'M');

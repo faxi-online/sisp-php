@@ -6,24 +6,22 @@ use Faxi\Sisp;
 
 $payment = new Sisp("90000045", "kfyhhKJH875ndu44");
 
-$buyForm = $payment->buyForm("TR001", 1000, "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php");
-
-//echo($buyForm);
+$buyForm = $payment->phoneRechargeForm("TR001", 1000, 9112233, 2, "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php");
 
 ?>
 
 <html>
 	<head>
-		<title>Buy Transaction</title>
+		<title>Phone Recharge Transaction</title>
 	</head>
 	<body>
 
 		<div>
 
-			<h5>Buy Transaction</h5>
+			<h5>Phone Recharge Transaction</h5>
 
 			<?= $buyForm ?>
-
+            
             <button onclick="startTransaction()">
                 Start Transaction
             </button>
