@@ -27,12 +27,18 @@ Create the transaction object from the **Sisp** class.
 You can pass three parameters:
 - Your POS Id/Identifier
 - The respective POS authentication code
-- The VBV api URL, and it is set by default as "https://mc.vinti4net.cv/BizMPIOnUsSisp" 
+- The VBV api URL, and it is set by default as "https://mc.vinti4net.cv/BizMPIOnUsSisp",
+remember to define it value in production, without the path "/CardPayment" because
+it will be added automatically according the transaction code
 
 ```php
 use Faxi\Sisp;
 
-$payment = new Sisp("90000045", "kfyhhKJH875ndu44");
+$payment = new Sisp(
+        "90000045",
+        "kfyhhKJH875ndu44"
+    );
+
 ```
 
 ## Generate the HTML buy form
@@ -44,7 +50,11 @@ It receives three parameters:
 - The callback url, the transaction result will be sent to here
 
 ```php
-$buyForm = $payment->buyForm("TR001", 1000, "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php");
+$buyForm = $payment->buyForm(
+        "TR001",
+        1000,
+        "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php"
+    );
 ```
 
 ## Put the form on your HTML page
@@ -90,7 +100,10 @@ it receive three parameters:
 - The cancellation callback function
 
 ```php
-$payment = new Sisp("90000045", "kfyhhKJH875ndu44");
+$payment = new Sisp(
+        "90000045",
+        "kfyhhKJH875ndu44"
+    );
 
 $payment->onTransactionResult(
 
@@ -131,7 +144,13 @@ It receives five parameters:
 - The callback url, the transaction result will be sent to here
 
 ```php
-$buyForm = $payment->phoneRechargeForm("TR001", 1000, 9112233, 2, "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php");
+$buyForm = $payment->phoneRechargeForm(
+        "TR001",
+        1000,
+        9112233,
+        2,
+        "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php"
+    );
 ```
 
 ## Generate service payment HTML form
@@ -145,6 +164,12 @@ It receives five parameters:
 - The callback url, the transaction result will be sent to here
 
 ```php
-$buyForm = $payment->servicePaymentForm("TR001", 1000, "123456789", "6", "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php");
+$buyForm = $payment->servicePaymentForm(
+        "TR001",
+        1000,
+        "123456789",
+        "6",
+        "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php"
+    );
 ```
 
