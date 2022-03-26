@@ -8,5 +8,10 @@
         }
     ],
     "require": {},
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "Faxi": "src/Faxi"
+        }
+    }
 }
