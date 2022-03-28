@@ -181,3 +181,10 @@ $buyForm = $payment->servicePaymentForm(
 	);
 ```
 
+## Internationalization
+If you want you can change the language of payment form presented to user,
+it supports en and pt.
+
+```php
+$payment->lang = "pt";
+```

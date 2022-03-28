@@ -5,6 +5,7 @@ include "../Sisp.php";
 use Faxi\Sisp;
 
 $payment = new Sisp("90000045", "kfyhhKJH875ndu44");
+//$payment->lang = "pt";
 
 // generate your transaction id
 // it can be max of 15 characters
