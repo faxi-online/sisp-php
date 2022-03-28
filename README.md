@@ -100,6 +100,9 @@ and submit it by calling **document.forms[0].submit();**
 </html>
 ```
 
+After submitted the form, you should be redirect to a page like the below.
+![Payment form](/docs/payment-form.png)
+
 ## Transaction result callback
 To process callback result we should use the method **onTransactionResult**,
 it receive three parameters:
