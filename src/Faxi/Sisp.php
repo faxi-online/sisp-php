@@ -122,7 +122,7 @@ class Sisp
         {
             if(isset($_POST["messageType"]) && in_array($_POST["messageType"], $successMessageType))
             {
-                $fingerPrintCalculado = GerarFingerPrintRespostaBemSucedida(
+                $fingerPrintCalculado = self::GerarFingerPrintRespostaBemSucedida(
                     $this->posAuthCode, $_POST["messageType"] , $_POST["merchantRespCP"] ,
                     $_POST["merchantRespTid"] , $_POST["merchantRespMerchantRef"] , $_POST["merchantRespMerchantSession"] ,
                     $_POST["merchantRespPurchaseAmount"] , $_POST["merchantRespMessageID"] , $_POST["merchantRespPan"] ,

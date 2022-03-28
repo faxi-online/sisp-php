@@ -6,7 +6,16 @@ use Faxi\Sisp;
 
 $payment = new Sisp("90000045", "kfyhhKJH875ndu44");
 
-$buyForm = $payment->buyForm("TR001", 1000, "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php");
+// generate your transaction id
+// it can be max of 15 characters
+// after a successful payment you should not reuse that id for new transaction
+$transaction_id = "T" . date('YmdHms');
+
+$buyForm = $payment->buyForm(
+		$transaction_id,
+		1000,
+		"http://localhost/sisp-php/src/Faxi/samples/callback-buy.php"
+	);
 
 //echo($buyForm);
 

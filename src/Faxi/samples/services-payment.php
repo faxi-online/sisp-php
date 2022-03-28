@@ -6,7 +6,14 @@ use Faxi\Sisp;
 
 $payment = new Sisp("90000045", "kfyhhKJH875ndu44");
 
-$buyForm = $payment->servicePaymentForm("TR001", 1000, "123456789", "6", "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php");
+$transaction_id = "T" . date('YmdHms');
+$buyForm = $payment->servicePaymentForm(
+		$transaction_id,
+		1000,
+		"123456789",
+		"6",
+		"http://localhost/sisp-php/src/Faxi/samples/callback-buy.php"
+	);
 
 ?>
 
