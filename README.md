@@ -41,20 +41,28 @@ $payment = new Sisp(
 
 ```
 
+## Generate Transaction id
+Generate your transaction id, it can be max of 15 characters,
+after a successful payment you should not reuse that id for new transaction.
+```php
+// sample to generate id from timestamp
+$transaction_id = "T" . date('YmdHms');
+```
+
 ## Generate the HTML buy form
 You can generate the HTML form
 by calling the **buyForm** method.
 It receives three parameters:
-- The transaction Id, you will receive it in the transaction callback, it can be max of 15 characters
+- The transaction Id, you will receive it in the transaction callback
 - The amount of the transaction
 - The callback url, the transaction result will be sent to here
 
 ```php
 $buyForm = $payment->buyForm(
-        "TR001",
-        1000,
-        "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php"
-    );
+		$transaction_id,
+		1000,
+		"http://localhost/sisp-php/src/Faxi/samples/callback-buy.php"
+	);
 ```
 
 ## Put the form on your HTML page
@@ -145,12 +153,12 @@ It receives five parameters:
 
 ```php
 $buyForm = $payment->phoneRechargeForm(
-        "TR001",
-        1000,
-        9112233,
-        2,
-        "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php"
-    );
+		$transaction_id,
+		1000,
+		9112233,
+		2,
+		"http://localhost/sisp-php/src/Faxi/samples/callback-buy.php"
+	);
 ```
 
 ## Generate service payment HTML form
@@ -165,11 +173,11 @@ It receives five parameters:
 
 ```php
 $buyForm = $payment->servicePaymentForm(
-        "TR001",
-        1000,
-        "123456789",
-        "6",
-        "http://localhost/sisp-php/src/Faxi/samples/callback-buy.php"
-    );
+		$transaction_id,
+		1000,
+		"123456789",
+		"6",
+		"http://localhost/sisp-php/src/Faxi/samples/callback-buy.php"
+	);
 ```
 
