@@ -101,6 +101,7 @@ and submit it by calling **document.forms[0].submit();**
 ```
 
 After submitted the form, you should be redirect to a page like the below.
+<br/>
 ![Payment form](/docs/payment-form.png)
 
 ## Transaction result callback
