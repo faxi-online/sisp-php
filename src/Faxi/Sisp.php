@@ -18,6 +18,8 @@ class Sisp
     public $apiBaseUrl = "https://mc.vinti4net.cv/BizMPIOnUsSisp";
     public $transactionPath = "/CardPayment";
 
+    public $data = null;
+
     function __construct($posId, $posAuthCode, $apiUrl = null)
     {
         $this->posId = $posId;
@@ -114,16 +116,55 @@ class Sisp
         return self::generateHtmlForm($postUrl, $fields);
     }
 
+    function refundForm($transaction_id, $amount, $clearingPeriod, $sisp_transaction_id, $callbackUrl)
+    {
+        $fields = [
+            'transactionCode' => 4,
+            'posID' => $this->posId,
+            'merchantRef' => $transaction_id,
+            'merchantSession' => "S" . date('YmdHms'),
+            'amount' => $amount,
+            'currency' => 132,
+            'is3DSec' => 1,
+            'urlMerchantResponse' => $callbackUrl,
+            'languageMessages' => $this->lang,
+            'timeStamp' => date('Y-m-d H:m:s'),
+            'fingerprintversion' => '1',
+            'entityCode' => '',
+            'referenceNumber' => '',
+            'reversal' => 'R',
+            'clearingPeriod' => $clearingPeriod,
+            'transactionID' => $sisp_transaction_id,
+        ];
+
+        $fields['fingerprint'] = self::GerarFingerPrintEnvio(
+            $this->posAuthCode, $fields['timeStamp'], $amount,
+            $fields['merchantRef'], $fields['merchantSession'], $fields['posID'],
+            $fields['currency'], $fields['transactionCode'], '', ''
+        );
+
+        $postUrl = $this->apiBaseUrl . $this->transactionPath . "?FingerPrint=" . urlencode($fields["fingerprint"]) . "&TimeStamp=" . urlencode($fields["timeStamp"]) . "&FingerPrintVersion=" . urlencode($fields["fingerprintversion"]); 
+        
+        return self::generateHtmlForm($postUrl, $fields);
+    }
+
     function onTransactionResult($successCallback, $errorCallback = null, $cancelledCallback = null)
     {
         $successMessageType = array('8', '10', 'P', 'M');
+
+        /*
+            8 - buy
+            P - payment service
+            M - phone recharge
+            10 - refund
+        */
 
         if(isset($_POST)) 
         {
             if(isset($_POST["messageType"]) && in_array($_POST["messageType"], $successMessageType))
             {
                 $fingerPrintCalculado = self::GerarFingerPrintRespostaBemSucedida(
-                    $this->posAuthCode, $_POST["messageType"] , $_POST["merchantRespCP"] ,
+                    $this->posAuthCode, $_POST["messageType"] , $_POST["merchantRespCP"],
                     $_POST["merchantRespTid"] , $_POST["merchantRespMerchantRef"] , $_POST["merchantRespMerchantSession"] ,
                     $_POST["merchantRespPurchaseAmount"] , $_POST["merchantRespMessageID"] , $_POST["merchantRespPan"] ,
                     $_POST["merchantResp"] , $_POST["merchantRespTimeStamp"] , $_POST["merchantRespReferenceNumber"] ,
@@ -133,7 +174,7 @@ class Sisp
 
                 if($_POST["resultFingerPrint"] == $fingerPrintCalculado)
                 {
-                    $successCallback($_POST["merchantRespMerchantRef"]);
+                    $successCallback($_POST["merchantRespMerchantRef"], $_POST["merchantRespCP"], $_POST["merchantRespTid"]);
                 }
                 else
                 {

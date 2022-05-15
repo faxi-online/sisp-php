@@ -9,9 +9,12 @@ $payment = new Sisp("90000045", "kfyhhKJH875ndu44");
 $payment->onTransactionResult(
 
         // success callback
-        function ($transaction_id){
+        function ($transaction_id, $clearingPeriod, $sisp_transaction_id){
 
             echo "<p>Payment sucessfully for $transaction_id</p>";
+
+            echo "<p>merchantRespCP: " . $clearingPeriod. "</p>";
+            echo "<p>merchantRespTid: " . $sisp_transaction_id . "</p>";
 
         },
 
