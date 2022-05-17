@@ -14,9 +14,9 @@ $transaction_id = "T" . date('YmdHms');
 $refundForm = $payment->refundForm(
 		$transaction_id,
 		1000,
-		1763,
-		228,
-		"http://localhost/sisp-php/src/Faxi/samples/callback-buy.php"
+		1765,
+		76133,
+		"http://localhost/sisp-php/src/Faxi/samples/callback-refund.php"
 	);
 
 //echo($refundForm);

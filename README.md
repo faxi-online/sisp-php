@@ -119,29 +119,34 @@ $payment = new Sisp(
 
 $payment->onTransactionResult(
 
-    // success callback
-    function ($transaction_id){
+	// success callback
+	function ($transaction_id, $clearingPeriod, $sisp_transaction_id){
 
-        echo "<p>Payment sucessfully for $transaction_id</p>";
+		echo "<p>Payment sucessfully for $transaction_id</p>";
 
-    },
+		// save clearingPeriod and sisp_transaction_id
+		// you will need them to do refund later
+		echo "<p>merchantRespCP: " . $clearingPeriod. "</p>";
+		echo "<p>merchantRespTid: " . $sisp_transaction_id . "</p>";
 
-    // error callback
-    function ($transaction_id, $errorDescription, $errorDetail, $errorAdditionalMessage){
+	},
 
-        echo "<p>Error on transaction $transaction_id</p>";
-        echo "<p>Error: description $errorDescription</p>";
-        echo "<p>Error: detail $errorDetail</p>";
-        echo "<p>Error: additional $errorAdditionalMessage</p>";
+	// error callback
+	function ($transaction_id, $errorDescription, $errorDetail, $errorAdditionalMessage){
 
-    },
+		echo "<p>Error on transaction $transaction_id</p>";
+		echo "<p>Error: description $errorDescription</p>";
+		echo "<p>Error: detail $errorDetail</p>";
+		echo "<p>Error: additional $errorAdditionalMessage</p>";
 
-    // cancellation callback
-    function (){
+	},
 
-        echo "<p>Transaction cancelled</p>";
+	// cancellation callback
+	function (){
 
-    }
+		echo "<p>Transaction cancelled</p>";
+
+	}
 
 );
 ```
@@ -183,6 +188,56 @@ $buyForm = $payment->servicePaymentForm(
 		"6",
 		"http://localhost/sisp-php/src/Faxi/samples/callback-buy.php"
 	);
+```
+
+## Generate refund HTML form
+Call the **refundForm** method.
+It receives five parameters:
+- The transaction Id, you will receive it in the transaction callback, it can be max of 15 characters, (It must not be the same as the transaction to be refunded)
+- The amount to be refunded
+- The clearing period number of transaction that is being refunded, it is received in transaction result
+- The SISP transaction id received in transaction result
+- The callback url, the refund result will be sent to here
+```php
+$transaction_id = "T" . date('YmdHms');
+
+$refundForm = $payment->refundForm(
+		$transaction_id,
+		1000,
+		1765,
+		76133,
+		"http://localhost/sisp-php/src/Faxi/samples/callback-refund.php"
+	);
+```
+To handle the refund result you must do the following code.
+```php
+$payment->onRefundResult(
+
+	// success callback
+	function ($transaction_id){
+
+		echo "<p>Refunded done for $transaction_id</p>";
+
+	},
+
+	// error callback
+	function ($transaction_id, $errorDescription, $errorDetail, $errorAdditionalMessage){
+
+		echo "<p>Error on refund for $transaction_id</p>";
+		echo "<p>Error: description $errorDescription</p>";
+		echo "<p>Error: detail $errorDetail</p>";
+		echo "<p>Error: additional $errorAdditionalMessage</p>";
+
+	},
+
+	// cancellation callback
+	function (){
+
+		echo "<p>Refund cancelled</p>";
+
+	}
+
+);
 ```
 
 ## Internationalization

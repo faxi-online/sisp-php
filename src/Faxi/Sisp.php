@@ -150,12 +150,54 @@ class Sisp
 
     function onTransactionResult($successCallback, $errorCallback = null, $cancelledCallback = null)
     {
-        $successMessageType = array('8', '10', 'P', 'M');
+        $successMessageType = array('8', 'P', 'M');
 
         /*
             8 - buy
             P - payment service
             M - phone recharge
+        */
+
+        if(isset($_POST)) 
+        {
+            if(isset($_POST["messageType"]) && in_array($_POST["messageType"], $successMessageType))
+            {
+                $fingerPrintCalculado = self::GerarFingerPrintRespostaBemSucedida(
+                    $this->posAuthCode, $_POST["messageType"] , $_POST["merchantRespCP"],
+                    $_POST["merchantRespTid"] , $_POST["merchantRespMerchantRef"] , $_POST["merchantRespMerchantSession"] ,
+                    $_POST["merchantRespPurchaseAmount"] , $_POST["merchantRespMessageID"] , $_POST["merchantRespPan"] ,
+                    $_POST["merchantResp"] , $_POST["merchantRespTimeStamp"] , $_POST["merchantRespReferenceNumber"] ,
+                    $_POST["merchantRespEntityCode"] , $_POST["merchantRespClientReceipt"] , trim($_POST["merchantRespAdditionalErrorMessage"]) ,
+                    $_POST["merchantRespReloadCode"]
+                );
+
+                if($_POST["resultFingerPrint"] == $fingerPrintCalculado)
+                {
+                    $successCallback($_POST["merchantRespMerchantRef"], $_POST["merchantRespCP"], $_POST["merchantRespTid"]);
+                }
+                else
+                {
+                    $errorCallback($_POST["merchantRespMerchantRef"], "resultFingerPrint dont match", "", "");
+                }
+                
+            }
+            else if(isset($_POST["messageType"]) && $_POST["messageType"] == "6")
+            {
+                $errorCallback($_POST["merchantRespMerchantRef"], $_POST["merchantRespErrorDescription"], $_POST["merchantRespErrorDetail"], $_POST["merchantRespAdditionalErrorMessage"]);
+            }
+            else if(isset($_POST["UserCancelled"]) && $_POST["UserCancelled"] == "true")
+            {
+                $cancelledCallback();
+            }
+        }
+        
+    }
+
+    function onRefundResult($successCallback, $errorCallback = null, $cancelledCallback = null)
+    {
+        $successMessageType = array('10');
+
+        /*
             10 - refund
         */
 
